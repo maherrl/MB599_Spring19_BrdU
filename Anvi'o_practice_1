@@ -1,0 +1,35 @@
+# Download data from anvi'o website (http://merenlab.org/2016/06/22/anvio-tutorial-v2/) : contigs.fa, SAMPLE-01-RAW.bam, SAMPLE-02-RAW.bam, SAMPLE-03-RAW.bam.
+
+# Use the following anvi’o script to fix deflines to remove sequences that are shorter than 1,000 nts
+
+anvi-script-reformat-fasta contigs.fa -o contigs-fixed.fa -l 1000 --simplify-names
+
+mv contigs-fixed.fa contigs.fa
+
+mv contigs-fixed.fa contigs.fa
+
+## Creat the anvi'o contigs database
+
+anvi-gen-contigs-database -f contigs.fa -o contigs.db -n 'An example contigs database'
+
+##(Optional) contig database hits with HMM models (anvi-run-hmms)
+anvi-run-hmms -c contigs.db
+
+## (Optional) Visualize the contigs database 
+anvi-display-contigs-stats contigs.db
+
+## Profiling BAM files : 
+
+anvi-init-bam SAMPLE-01-RAW.bam -o SAMPLE-01.bam
+anvi-init-bam SAMPLE-02-RAW.bam -o SAMPLE-02.bam
+anvi-init-bam SAMPLE-03-RAW.bam -o SAMPLE-03.bam
+
+### Creat sample-specific profiles 
+anvi-profile -i SAMPLE-01.bam -c contigs.db
+
+# error: some contig names in the contig db do not match contig names in .bam file
+         -> Need to find the reason why it happend
+
+
+
+done
